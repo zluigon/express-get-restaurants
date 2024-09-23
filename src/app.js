@@ -9,4 +9,8 @@ app.get("/restaurants", async (req, res) => {
   res.json(allRestaurants);
 });
 
+app.get("/restaurants/:id", async (req, res) => {
+  let foundRestaurant = await Restaurant.findByPk(req.params.id);
+  res.json(foundRestaurant);
+});
 module.exports = app;
