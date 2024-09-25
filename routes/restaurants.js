@@ -41,6 +41,7 @@ router.post(
   "/",
   [
     check("name").not().isEmpty().trim(),
+    check("name").trim().isLength({min: 10, max: 30}),
     check("location").not().isEmpty().trim(),
     check("cuisine").not().isEmpty().trim(),
   ],
