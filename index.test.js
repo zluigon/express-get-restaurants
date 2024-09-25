@@ -2,10 +2,7 @@ const request = require("supertest");
 const app = require("./src/app");
 
 const { execSync } = require("child_process");
-
-beforeAll(async () => {
-  execSync("npm run seed");
-});
+execSync("npm run seed");
 
 describe("restaurant routes", () => {
   test("GET", async () => {

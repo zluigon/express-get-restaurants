@@ -19,7 +19,7 @@ router.get("/", async (req, res, next) => {
     });
     res.json(allRestaurants);
   } catch (error) {
-    console.error(error);
+    console.error(`Error: ${error.message}`)
     next(error);
   }
 });
@@ -30,7 +30,7 @@ router.get("/:id", async (req, res, next) => {
     const foundRestaurant = await Restaurant.findByPk(req.params.id);
     res.json(foundRestaurant);
   } catch (error) {
-    console.error(error);
+    console.error(`Error: ${error.message}`)
     next(error);
   }
 });
@@ -41,7 +41,7 @@ router.post("/", async (req, res, next) => {
     const newRestaurant = await Restaurant.create(req.body);
     res.json(newRestaurant);
   } catch (error) {
-    console.error(error);
+    console.error(`Error: ${error.message}`)
     next(error);
   }
 });
@@ -53,7 +53,7 @@ router.put("/:id", async (req, res, next) => {
     const updatedRestaurant = await currRestaurant.update(req.body);
     res.json(updatedRestaurant);
   } catch (error) {
-    console.error(error);
+    console.error(`Error: ${error.message}`)
     next(error);
   }
 });
@@ -65,7 +65,7 @@ router.delete("/:id", async (req, res, next) => {
     const deletedRestaurant = await currRestaurant.destroy();
     res.json(deletedRestaurant);
   } catch (error) {
-    console.error(error);
+    console.error(`Error: ${error.message}`)
     next(error);
   }
 });
