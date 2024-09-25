@@ -73,4 +73,16 @@ describe("restaurant routes", () => {
       })
     );
   });
+
+  test("POST w/ missing field", async () => {
+    const response = await request(app).post("/restaurants").send({
+      name: "",
+      location: "TX",
+      cuisine: "",
+    });
+    const responseData = JSON.parse(response.text);
+
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toHaveProperty("error");
+  });
 });

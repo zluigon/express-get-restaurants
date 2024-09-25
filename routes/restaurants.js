@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Restaurant, Menu, Item } = require("../models/.");
+const { check, validationResult } = require("express-validator");
 
 // get
 router.get("/", async (req, res, next) => {
@@ -19,7 +20,7 @@ router.get("/", async (req, res, next) => {
     });
     res.json(allRestaurants);
   } catch (error) {
-    console.error(`Error: ${error.message}`)
+    console.error(`Error: ${error.message}`);
     next(error);
   }
 });
@@ -30,21 +31,34 @@ router.get("/:id", async (req, res, next) => {
     const foundRestaurant = await Restaurant.findByPk(req.params.id);
     res.json(foundRestaurant);
   } catch (error) {
-    console.error(`Error: ${error.message}`)
+    console.error(`Error: ${error.message}`);
     next(error);
   }
 });
 
 // create
-router.post("/", async (req, res, next) => {
-  try {
-    const newRestaurant = await Restaurant.create(req.body);
-    res.json(newRestaurant);
-  } catch (error) {
-    console.error(`Error: ${error.message}`)
-    next(error);
+router.post(
+  "/",
+  [
+    check("name").not().isEmpty().trim(),
+    check("location").not().isEmpty().trim(),
+    check("cuisine").not().isEmpty().trim(),
+  ],
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.json({ error: errors.array() });
+      } else {
+        const newRestaurant = await Restaurant.create(req.body);
+        res.json(newRestaurant);
+      }
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+      next(error);
+    }
   }
-});
+);
 
 // update
 router.put("/:id", async (req, res, next) => {
@@ -53,7 +67,7 @@ router.put("/:id", async (req, res, next) => {
     const updatedRestaurant = await currRestaurant.update(req.body);
     res.json(updatedRestaurant);
   } catch (error) {
-    console.error(`Error: ${error.message}`)
+    console.error(`Error: ${error.message}`);
     next(error);
   }
 });
@@ -65,7 +79,7 @@ router.delete("/:id", async (req, res, next) => {
     const deletedRestaurant = await currRestaurant.destroy();
     res.json(deletedRestaurant);
   } catch (error) {
-    console.error(`Error: ${error.message}`)
+    console.error(`Error: ${error.message}`);
     next(error);
   }
 });
